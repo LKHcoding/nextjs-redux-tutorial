@@ -1,5 +1,5 @@
 import Head from "next/head";
-import styles from "../styles/Home.module.css";
+// import styles from "../styles/styles.scss";
 import styled from "styled-components";
 
 const Wrapper = styled.section`
