@@ -1,3 +1,20 @@
 $white: #ffffff !default;
 $black: #000000 !default;
 $bg-gray: #f8f8f8 !default;
+$bd-gray: #d8d8d8 !default;
+$full-w: 100vw !default;
+$full-h: 100vh !default;
+
+@mixin card($width, $height) {
+  display: inline-block;
+  box-sizing: border-box;
+  width: $width;
+  height: $height;
+  background-color: palevioletred;
+  color: $white;
+  border: 1px solid $bd-gray;
+  border-radius: 5px;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  padding: 20px;
+}

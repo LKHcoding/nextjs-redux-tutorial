@@ -1,5 +1,44 @@
 .card-list-container {
-  width: 100vw;
-  height: 100vh;
+  width: $full-w;
+  height: $full-h;
   background-color: $bg-gray;
+  // scss는 네스팅 구조라서 여기다가 쓰면
+  //자식 에다가 스타일 줄 수 있음.
+  &.wrapper {
+    margin: 0 auto;
+    width: 860px;
+    height: $full-h;
+    background-color: $white;
+    border-left: 1px solid $bd-gray;
+    border-right: 1px solid $bd-gray;
+    padding: 20px;
+    .search-input {
+      width: 200px;
+      height: 40px;
+      padding: 0 20px;
+    }
+    .btn-black {
+      margin-left: 10px;
+      width: 100px;
+      height: 40px;
+      color: $white;
+      background-color: $black;
+      border-radius: 5px;
+    }
+    .card-list {
+      margin-top: 20px;
+      .card {
+        @include card(200px, 300px);
+        &:first-child {
+          margin-left: 0;
+        }
+        &:hover {
+          box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
+        }
+        .name {
+          margin-bottom: 20px;
+        }
+      }
+    }
+  }
 }
