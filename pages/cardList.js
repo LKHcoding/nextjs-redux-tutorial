@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Card from "../components/card";
+import axios from "axios";
 
 const cardList = () => {
   const [selectedCard, setSelectedCard] = useState("");
@@ -7,28 +8,7 @@ const cardList = () => {
     name: "",
     job: "",
   });
-  const [cardList, setCardList] = useState([
-    {
-      cardIdx: 1,
-      name: "홍길동",
-      job: "의적",
-    },
-    {
-      cardIdx: 2,
-      name: "김철수",
-      job: "선생님",
-    },
-    {
-      cardIdx: 3,
-      name: "박영희",
-      job: "선생님",
-    },
-    {
-      cardIdx: 4,
-      name: "배트맨",
-      job: "의적",
-    },
-  ]);
+  const [cardList, setCardList] = useState([]);
 
   const handleChangeInput = (e) => {
     const { value, name } = e.target;
@@ -63,13 +43,33 @@ const cardList = () => {
   };
 
   const handleAddCard = () => {
+    // let newObj = {
+    //   cardIdx: cardList.length + 1,
+    //   name: inputVal.name,
+    //   job: inputVal.job,
+    // };
+    // setCardList(cardList.concat(newObj));
+
+    if (!inputVal.name) return alert("이름을 입력하세요");
+
     let newObj = {
-      cardIdx: cardList.length + 1,
+      email: "example@example.com",
       name: inputVal.name,
-      job: inputVal.job,
+      phone: "123123123-123123",
+      username: inputVal.name,
+      website: "example.org",
     };
 
-    setCardList(cardList.concat(newObj));
+    axios({
+      url: "https://jsonplaceholder.typicode.com/users",
+      method: "post",
+      data: newObj,
+    }).then((res) => {
+      console.log(res.data);
+      setCardList(cardList.concat(res.data));
+
+      //getPostDataByJson();
+    });
   };
 
   const handleDeleteCard = () => {
@@ -79,6 +79,20 @@ const cardList = () => {
 
     setCardList(cardList.filter((item) => item.cardIdx !== selectedCard));
   };
+
+  const getPostDataByJson = () => {
+    // fetch("https://jsonplaceholder.typicode.com/posts")
+    //   .then((response) => response.json())
+    //   .then((json) => console.log(json));
+    axios
+      .get("https://jsonplaceholder.typicode.com/users")
+      .then((res) => setCardList(res.data))
+      .catch((err) => console.log(err));
+  };
+  //페이지 첫 랜더링 후 1번만 실행되는곳
+  useEffect(() => {
+    getPostDataByJson();
+  }, []);
 
   useEffect(() => {}, [selectedCard]);
 
@@ -95,14 +109,14 @@ const cardList = () => {
               onChange={handleChangeInput}
               placeholder="이름"
             />
-            <input
+            {/* <input
               className="search-input"
               type="text"
               name="job"
               value={inputVal.job}
               onChange={handleChangeInput}
               placeholder="직업"
-            />
+            /> */}
             <button className="btn-black" onClick={handleUpdateCard}>
               수정
             </button>

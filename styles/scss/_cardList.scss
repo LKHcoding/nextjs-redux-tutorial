@@ -28,15 +28,20 @@
     .card-list {
       margin-top: 20px;
       .card {
-        @include card(200px, 300px);
-        &:first-child {
+        @include card(200px, 200px);
+        cursor: pointer;
+        &:nth-child(4n + 1) {
           margin-left: 0;
         }
         &:hover {
           box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.3);
         }
-        .name {
-          margin-bottom: 20px;
+        .item {
+          padding: 5px 0;
+          border-top: 1px solid $white;
+          &:first-child {
+            border-top: 0;
+          }
         }
       }
     }
