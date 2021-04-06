@@ -29,17 +29,46 @@ const cardList = () => {
     if (inputVal === "") {
       return alert("값을 입력해주세요");
     }
-    setCardList(
-      cardList.map((item) => {
-        return item.cardIdx === selectedCard
-          ? {
-              ...item,
-              job: inputVal.job,
-              name: inputVal.name,
-            }
-          : item;
+    // setCardList(
+    //   cardList.map((item) => {
+    //     return item.cardIdx === selectedCard
+    //       ? {
+    //           ...item,
+    //           job: inputVal.job,
+    //           name: inputVal.name,
+    //         }
+    //       : item;
+    //   })
+    // );
+
+    let updateObj = {
+      name: inputVal.name,
+      username: inputVal.name,
+    };
+
+    axios({
+      url: `https://jsonplaceholder.typicode.com/users/${selectedCard}`,
+      method: "put",
+      data: updateObj,
+    })
+      .then((res) => {
+        console.log(res.data);
+
+        setCardList(
+          cardList.map((item) => {
+            return item.id === res.data.id
+              ? {
+                  ...item,
+                  name: res.data.name,
+                  username: res.data.username,
+                }
+              : item;
+          })
+        );
+
+        // getPostDataByJson();
       })
-    );
+      .catch((err) => console.log(err));
   };
 
   const handleAddCard = () => {
@@ -64,20 +93,31 @@ const cardList = () => {
       url: "https://jsonplaceholder.typicode.com/users",
       method: "post",
       data: newObj,
-    }).then((res) => {
-      console.log(res.data);
-      setCardList(cardList.concat(res.data));
+    })
+      .then((res) => {
+        console.log(res.data);
+        setCardList(cardList.concat(res.data));
 
-      //getPostDataByJson();
-    });
+        //getPostDataByJson();
+      })
+      .catch((err) => console.log(err));
   };
 
   const handleDeleteCard = () => {
     if (selectedCard === undefined || selectedCard === "") {
       return alert("선택된 카드가 없습니다.");
     }
+    // setCardList(cardList.filter((item) => item.cardIdx !== selectedCard));
 
-    setCardList(cardList.filter((item) => item.cardIdx !== selectedCard));
+    axios({
+      url: `https://jsonplaceholder.typicode.com/users/${selectedCard}`,
+      method: "delete",
+    })
+      .then((res) => {
+        // console.log(res.data);
+        setCardList(cardList.filter((item) => item.id !== selectedCard));
+      })
+      .catch((err) => console.log(err));
   };
 
   const getPostDataByJson = () => {
