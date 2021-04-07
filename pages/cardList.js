@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Card from "../components/card";
 import axios from "axios";
 import Router from "next/router";
@@ -10,6 +10,21 @@ const cardList = () => {
     job: "",
   });
   const [cardList, setCardList] = useState([]);
+
+  const [imgFileUrl, setImgFileUrl] = useState("");
+  const [imgFile, setImgFile] = useState();
+
+  const imgPreviewReference = useRef();
+  const fileInputReference = useRef();
+
+  const handleChangeFile = (e) => {
+    const { files } = e.target;
+    setImgFile(files[0]);
+  };
+
+  const handleAddImg = () => {
+    fileInputReference.current.click();
+  };
 
   const handleChangeInput = (e) => {
     const { value, name } = e.target;
@@ -141,6 +156,23 @@ const cardList = () => {
 
   useEffect(() => {}, [selectedCard]);
 
+  useEffect(() => {
+    if (imgFile) {
+      // FileReader를 사용해서 이미지 미리보기 기능 구현하기
+      // const preview = imgPreviewReference.current;
+      // let reader = new FileReader();
+      // reader.onload = function (e) {
+      //   preview.src = e.target.result;
+      // };
+      // reader.readAsDataURL(imgFile);
+
+      //URL사용해서 미리보기 구현하기
+      // *참고 - https://ichi.pro/ko/reactlo-eoblodeu-doen-imiji-milibogi-37160975550141
+      const imageUrl = URL.createObjectURL(imgFile);
+      setImgFileUrl(imageUrl);
+    }
+  }, [imgFile]);
+
   return (
     <div>
       <section className="card-list-container">
@@ -162,7 +194,7 @@ const cardList = () => {
               onChange={handleChangeInput}
               placeholder="직업"
             /> */}
-            <button className="btn-black" onClick={handleUpdateCard}>
+            {/* <button className="btn-black" onClick={handleUpdateCard}>
               수정
             </button>
             <button className="btn-black" onClick={handleAddCard}>
@@ -170,7 +202,24 @@ const cardList = () => {
             </button>
             <button className="btn-black" onClick={handleDeleteCard}>
               삭제
+            </button> */}
+            {/* 파일 업로드 할때 useRef사용하는 방식 */}
+            <button className="btn-black" onClick={handleAddImg}>
+              이미지추가
             </button>
+            <input
+              type="file"
+              style={{ display: "none" }}
+              ref={fileInputReference}
+              onChange={handleChangeFile}
+            />
+            {imgFile && (
+              <img
+                ref={imgPreviewReference}
+                style={{ width: "400px", height: "auto" }}
+                src={imgFileUrl}
+              />
+            )}
           </div>
           <div className="card-list">
             {cardList
