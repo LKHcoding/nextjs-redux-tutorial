@@ -3,6 +3,7 @@ const next = require("next");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
 const expressSession = require("express-session");
+const axios = require("axios");
 
 // 실행 환경 여부 가져오기
 const dev = process.env.NODE_ENV !== "production";
@@ -40,6 +41,20 @@ app.prepare().then(() => {
   //   };
   //   return app.render(req, res, actualPage, queryParams);
   // });
+
+  //직접 라우팅 제어하는 방식
+  server.get("/card_detail/:idx", async (req, res) => {
+    const actualPage = "/card_detail";
+
+    let result = await axios
+      .get(`https://jsonplaceholder.typicode.com/users/${req.params.idx}`)
+      .then((res) => res.data)
+      .catch((err) => console.log(err));
+    const queryParams = {
+      data: result,
+    };
+    return app.render(req, res, actualPage, queryParams);
+  });
 
   /**
    * 넥스트가 가지고있는 페이지 프롭스를 핸들링을 하는 방식에 대한 것들의 기본 코드임
