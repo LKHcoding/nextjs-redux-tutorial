@@ -19,4 +19,6 @@ const card = (props) => {
   );
 };
 
-export default card;
+// React.memo와 useMemo의 차이점
+// 참고 - https://sustainable-dev.tistory.com/137
+export default React.memo(card);
