@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import Card from "../components/card";
 import axios from "axios";
 import Router from "next/router";
@@ -34,13 +34,16 @@ const cardList = () => {
     });
   };
 
-  const handleClickCard = (idx) => {
-    setSelectedCard(idx);
-    Router.push(`/card_detail/${idx}`).then(() => window.scrollTo(0, 0));
+  const handleClickCard = useCallback(
+    (idx) => {
+      setSelectedCard(idx);
+      Router.push(`/card_detail/${idx}`).then(() => window.scrollTo(0, 0));
 
-    //router를 통해 다른페이지로 넘어가게되면
-    //스크롤이 유지되는경우가있다. 그래서 필요에 따라 화면 상단으로 올려 줘야한다.
-  };
+      //router를 통해 다른페이지로 넘어가게되면
+      //스크롤이 유지되는경우가있다. 그래서 필요에 따라 화면 상단으로 올려 줘야한다.
+    },
+    [selectedCard]
+  );
 
   const handleUpdateCard = () => {
     if (selectedCard === undefined || selectedCard === "") {
