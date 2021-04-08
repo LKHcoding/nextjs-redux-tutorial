@@ -21,4 +21,6 @@ const card = (props) => {
 
 // React.memo와 useMemo의 차이점
 // 참고 - https://sustainable-dev.tistory.com/137
+
+// React.memo, useMemo, useCallback 세가지 비교 - https://velog.io/@yu_yu/useMemo-useCallback-React.memo-gu4rsta9
 export default React.memo(card);
